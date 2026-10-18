@@ -11,11 +11,11 @@ WORKDIR /workspace
 
 # Copy build.gradle + settings.gradle trước, tải dependency để tận dụng cache layer
 COPY build.gradle settings.gradle ./
-RUN gradle build -x test
+RUN gradle dependencies --no-daemon -q
 
 # Copy mã nguồn rồi đóng gói file JAR (bỏ qua test)
 COPY src ./src
-RUN gradle build -x test
+RUN gradle build -x test --no-daemon -q
 
 # ---------- Stage 2: runtime - chỉ chứa JRE 21 + file JAR ----------
 FROM eclipse-temurin:21-jre-alpine  AS runtime
